@@ -25,7 +25,6 @@ module.exports = mongoose.model('User', userschema);
 //////////Configuração servidor e rota de cadastro//////////
 
 const express = require  (`express`) ;
-const mongoose = require(`mongoose`); 
 const userRouter = require(`./src/routes/userRoutes`);
 const router = express.Router()
 require(`dotenv`).config();
