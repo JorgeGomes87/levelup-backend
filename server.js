@@ -37,6 +37,18 @@ const app = express();
 app.use(express.json()); // Para interpretar JSON no corpo das requisições 
 
 // Conexão com o banco de dados MongoDB (substitua pela sua URL no .env)
+
+mongoose.connect(process.env.MONGODB_URI ) .then(() => console.log("Conectado ao MongoDB com sucesso!"))
+.catch((error) => console.error("Erro ao conectar ao MongoDB:", error));
+
+// Usar as rotas de usuário
+app.use('/api/usuarios', userRouter);
+// Iniciar o servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
+
 // Model de Usuário 
 const Usuario = require('../models/Usuario'); 
 
