@@ -1,3 +1,5 @@
+
+//////////Model de Usuário//////////
 const mongoose = require('mongoose');
 const userschema = new mongoose.Schema({
     name: {
@@ -27,6 +29,9 @@ const mongoose = require(`mongoose`);
 const userRouter = require(`./src/routes/userRoutes`);
 const router = express.Router()
 require(`dotenv`).config();
+const bcrypt = require('bcrypt');
+
+// Configuração do Express
 
 const app = express();
 app.use(express.json()); // Para interpretar JSON no corpo das requisições 
@@ -48,6 +53,7 @@ router.post('/cadastro', async (req, res) => {
         // 2. Criar e salvar o novo usuário
         const novoUsuario = new Usuario({ nome, email, senha });
         await novoUsuario.save();
+
 
         // 3. Responder com sucesso
         res.status(201).json({ mensagem: "Seja Bem Vindo a LEVEL-UP Usuário criado com sucesso!", usuario: novoUsuario });
