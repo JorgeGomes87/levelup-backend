@@ -25,8 +25,13 @@ module.exports = mongoose.model('User', userschema);
 //////////Configuração servidor e rota de cadastro//////////
 
 const express = require  (`express`) ;
-const userRouter = require(`./src/routes/userRoutes`);
 const router = express.Router()
+
+router.post('/cadastro', (req, res) => {
+    res.json({ mensagem: "Rota de cadastro de usuário funcionando!" });
+});
+module.exports = router;
+const userRoutes = require(`./src/routes/userRoutes`);
 require(`dotenv`).config();
 const bcrypt = require('bcrypt');
 
