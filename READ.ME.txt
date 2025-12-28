@@ -1,0 +1,93 @@
+Aqui está um README.md profissional e completo, focado no funcionamento técnico do seu Back-end. Ele foi estruturado para servir tanto como documentação pessoal quanto para apresentar o projeto a terceiros.
+🛡️ LevelUp - Motor de Gamificação (Back-end)
+
+Este é o servidor robusto que gerencia toda a lógica de mundos, comunidades, quizzes e rankings do projeto LevelUp. O sistema foi construído seguindo os 5 passos essenciais de arquitetura de dados e gamificação.
+🏗️ Arquitetura do Sistema
+
+O Back-end utiliza a stack MERN (focada em Node/Express/Mongo), estruturada da seguinte forma:
+
+    Autenticação JWT: Segurança baseada em tokens para proteger as ações dos usuários.
+
+    Banco de Dados NoSQL: Modelagem flexível para permitir que comunidades cresçam e quizzes sejam adicionados dinamicamente.
+
+    Relacionamento Bidirecional: Usuários e Comunidades estão conectados, permitindo consultas rápidas em ambos os sentidos.
+
+🚀 Os 5 Passos Implementados
+
+Conforme o planejamento estratégico, o servidor entrega as seguintes funcionalidades:
+1. Identidade e Cadastro
+
+Implementado via auth.js e rotas de usuário. Garante que cada "jogador" seja único, com senhas criptografadas via Bcrypt.
+
+    Rota Principal: POST /usuarios/cadastro
+
+2. Criação de Mundos (Comunidades)
+
+Permite a criação de nichos específicos (ex: Marvel, Harry Potter). Cada mundo carrega seu próprio array de objetos de Quiz.
+
+    Rota Principal: POST /comunidades
+
+3. Vínculo de Membros (O "Pacto")
+
+Quando um usuário entra em um mundo, o ID dele é registrado na comunidade e o ID da comunidade é registrado no progresso do usuário.
+
+    Rota Principal: POST /comunidades/:id/entrar
+
+4. Engine de Pontuação
+
+Motor que valida respostas. Ao acertar um quiz, o sistema utiliza o operador $inc do MongoDB para somar pontos em tempo real, sem sobrescrever os anteriores.
+
+    Rota Principal: POST /comunidades/:id/responder
+
+5. Sistema de Rankings Duplo
+
+    Global: Lista os melhores jogadores de todo o ecossistema.
+
+    Local: Lista os melhores jogadores de uma comunidade específica.
+
+    Rotas: /usuarios/ranking (Global) e /comunidades/:id/ranking (Local)
+
+🛠️ Endpoints para Testes (API Reference)
+👤 Usuários
+
+    POST /usuarios/cadastro: Cria novo perfil.
+
+    POST /usuarios/login: Retorna o Token de acesso.
+
+    GET /usuarios/ranking: Retorna o Top Global.
+
+🏰 Comunidades
+
+    GET /comunidades: Lista todos os mundos disponíveis.
+
+    POST /comunidades/:id/entrar: Vincula o usuário logado ao mundo.
+
+    POST /comunidades/:id/responder: Envia resposta e processa pontos (+10 por acerto).
+
+    GET /comunidades/:id/ranking: Ranking exclusivo daquele mundo.
+
+📦 Como Rodar o Projeto
+
+    Certifique-se de ter o Node.js instalado.
+
+    Clone o repositório.
+
+    Instale as dependências:
+    Bash
+
+npm install
+
+Configure sua MONGO_URL no arquivo .env ou server.js.
+
+Inicie o servidor:
+Bash
+
+    node server.js
+
+🛡️ Regras de Negócio Implementadas
+
+    Proteção: Você não pode ganhar pontos se não estiver autenticado.
+
+    Vínculo Único: O sistema impede que você entre duas vezes na mesma comunidade (evita duplicidade de progresso).
+
+    Integridade: Ao responder, o sistema verifica se você realmente faz parte daquela comunidade específica.
