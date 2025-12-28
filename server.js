@@ -70,6 +70,21 @@ app.get('/usuarios/todos', async (req, res) => {
   }
 });
 
+// --- ROTA: RANKING GLOBAL (Novidade) ---
+app.get('/usuarios/ranking', async (req, res) => {
+  try {
+    // Busca todos os usuários, ordena pelos pontos (maior para menor) e limita aos 10 melhores
+    const ranking = await User.find()
+      .select('nome pontos') 
+      .sort({ pontos: -1 })
+      .limit(10);
+      
+    res.json(ranking);
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao carregar ranking." });
+  }
+});
+
 // --- ROTA: DELETAR (Segurança ajustada) ---
 app.delete('/usuarios/deletar/:id', auth, async (req, res) => {
   const idDaUrl = req.params.id; 

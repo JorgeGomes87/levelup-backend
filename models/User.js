@@ -6,8 +6,10 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, lowercase: true },
   senha: { type: String, required: true },
   
+  // PONTUAÇÃO GLOBAL: Adicionada para o Ranking
+  pontos: { type: Number, default: 0 },
+
   // ESTRUTURA PARA O PASSO 4 E 5: 
-  // Armazena a pontuação do usuário em cada comunidade específica
   progresso: [{
     comunidade: { 
       type: mongoose.Schema.Types.ObjectId, 
