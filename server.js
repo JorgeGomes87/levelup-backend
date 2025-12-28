@@ -6,6 +6,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const auth = require('./auth'); 
 
+// 1. Importando as rotas de Eventos
+const eventoRoutes = require('./routes/eventoRoutes');
+
 const app = express();
 app.use(express.json());
 
@@ -13,6 +16,10 @@ app.use(express.json());
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Conectado ao MongoDB Atlas!"))
   .catch(err => console.error("❌ Erro de conexão:", err.message));
+
+// --- ROTAS DE EVENTOS (MODULARIZADAS) ---
+// Isso faz com que todas as rotas em eventoRoutes comecem com /eventos
+app.use('/eventos', eventoRoutes);
 
 // --- ROTA: CADASTRO ---
 app.post('/usuarios/cadastro', async (req, res) => {
@@ -77,13 +84,12 @@ app.get('/usuarios/todos', async (req, res) => {
 
 // --- ROTA: DELETAR (COM TRAVA DE SEGURANÇA) ---
 app.delete('/usuarios/deletar/:id', auth, async (req, res) => {
-  const idDaUrl = req.params.id; // Quem eu quero deletar
-  const idDoToken = req.usuarioId.id; // Quem eu sou de verdade
+  const idDaUrl = req.params.id; 
+  const idDoToken = req.usuarioId.id; 
 
   console.log(`🗑️ Tentativa de DELETE | Alvo: ${idDaUrl} | Logado: ${idDoToken}`);
 
   try {
-    // SE OS IDs FOREM DIFERENTES, DÁ O ERRO:
     if (idDaUrl !== idDoToken) {
       console.log("🚫 BLOQUEADO: Tentativa de deletar conta de terceiros!");
       return res.status(403).json({ 
