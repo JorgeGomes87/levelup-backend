@@ -1,26 +1,46 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-    const authHeader = req.header('Authorization');
+  const authHeader = req.headers.authorization;
 
-    if (!authHeader) {
-        return res.status(401).json({ mensagem: "Acesso negado! Token não fornecido." });
-    }
+  // Token não enviado
+  if (!authHeader) {
+    return res.status(401).json({
+      erro: "Acesso negado. Token não fornecido."
+    });
+  }
 
-    try {
-        const token = authHeader.replace('Bearer ', '');
-        const verificado = jwt.verify(token, process.env.JWT_SECRET);
-        
-        // PADRONIZAÇÃO:
-        // Se o seu login gerou { id: '...' }, pegamos o .id
-        // Se gerou apenas a string, usamos o verificado direto
-        req.usuarioId = verificado.id || verificado;
-        
-        // Log para te ajudar a debugar no Render (pode remover depois)
-        console.log("🔐 Usuário Autenticado ID:", req.usuarioId);
-        
-        next();
-    } catch (err) {
-        res.status(400).json({ mensagem: "Token inválido ou expirado!" });
-    }
+  // Formato esperado: "Bearer TOKEN"
+  const parts = authHeader.split(' ');
+
+  if (parts.length !== 2) {
+    return res.status(401).json({
+      erro: "Token mal formatado."
+    });
+  }
+
+  const [scheme, token] = parts;
+
+  if (!/^Bearer$/i.test(scheme)) {
+    return res.status(401).json({
+      erro: "Token mal formatado."
+    });
+  }
+
+  // Verificação do token
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // 🔐 DADOS DO USUÁRIO
+    req.usuarioId = decoded.id;
+    req.role = decoded.role; // 👑 ESSENCIAL PARA ADMIN
+
+    console.log("🔐 Usuário autenticado:", req.usuarioId, "| role:", req.role);
+
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      erro: "Token inválido ou expirado."
+    });
+  }
 };
