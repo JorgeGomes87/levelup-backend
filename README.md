@@ -1,189 +1,195 @@
-🛡️ LevelUp – API de Gamificação
+🚀 LevelUp Eventos
 
-O LevelUp é uma API de gamificação desenvolvida em Node.js que permite o gerenciamento de usuários, comunidades temáticas, quizzes, eventos e rankings.
-O projeto aplica conceitos de autenticação, segurança, regras de negócio e pontuação, servindo como base para integração com um frontend de demonstração.
+    Plataforma interativa para eventos, comunidades e gamificação educacional, unindo tecnologia, engajamento e experiência do usuário em um único ecossistema digital.
 
-🚀 Funcionalidades
+📌 Sobre o Projeto
 
-Cadastro e login de usuários com autenticação segura
+    O LevelUp Eventos é uma plataforma web desenvolvida para conectar pessoas através de eventos tecnológicos, comunidades temáticas e desafios interativos (quizzes), promovendo aprendizado contínuo e engajamento por meio de gamificação e ranking global.
 
-Criptografia de senhas
+    O projeto foi idealizado para resolver a dificuldade de engajar participantes em eventos online e presenciais, oferecendo uma experiência moderna, interativa e motivadora.
 
-Sistema de comunidades temáticas
+🎯 Problema
 
-Quizzes com validação de respostas
+    Atualmente, muitos eventos perdem engajamento após a inscrição inicial. Falta interação contínua entre participantes, organizadores e conteúdo.
 
-Sistema de pontuação global e por comunidade
+    Principais dores identificadas:
 
-Rankings gerais e rankings por comunidade
+    Baixa participação após o evento
 
-Criação e gerenciamento de eventos
+    Pouca integração entre participantes
 
-Controle de acesso por autenticação (JWT)
+    Falta de incentivo ao aprendizado contínuo
 
-Estrutura preparada para usuários administradores
+    Experiência digital pouco atrativa
 
-🛠️ Tecnologias Utilizadas
+💡 Solução Proposta
 
-Node.js – Ambiente de execução
+    O LevelUp Eventos centraliza:
 
-Express – Criação e organização das rotas
+    Eventos em destaque
 
-MongoDB Atlas – Banco de dados em nuvem
+    Comunidades temáticas (tecnologia, cultura geek, programação, etc.)
 
-Mongoose – Modelagem e manipulação dos dados
+    Sistema de quizzes interativos
 
-JWT (JSON Web Token) – Autenticação e segurança
+    Ranking global de usuários
 
-Bcrypt – Criptografia de senhas
+    Tudo em uma interface moderna inspirada em plataformas de streaming.
 
-Dotenv – Gerenciamento de variáveis de ambiente
+🧩 Funcionalidades Principais
+👤 Autenticação
 
-Cors – Liberação de acesso para o frontend
+    Cadastro e login de usuários
 
-Thunder Client – Testes das rotas da API
+    Autenticação segura com JWT
 
-🧱 Estrutura do Projeto
-api/
-│── models/
-│   ├── User.js
-│   ├── Comunidade.js
-│   └── Event.js
-│
-│── routes/
-│   ├── comunidadeRoutes.js
-│   └── eventoRoutes.js
-│
-│── auth.js
-│── server.js
-│── package.json
-│── .env (não versionado)
+📅 Eventos
 
-🔐 Autenticação
+    Listagem de eventos em destaque
 
-A autenticação é feita utilizando JWT
+    Detalhes de cada evento
 
-Após o login, o usuário recebe um token
+    Integração com API REST
 
-O token deve ser enviado no header das requisições protegidas
+👥 Comunidades
 
-Authorization: Bearer SEU_TOKEN_AQUI
+    Entrar e sair de comunidades
 
+    Comunidades temáticas (Star Wars, Harry Potter, Marvel, Naruto, Dragon Ball)
 
-As senhas são criptografadas com Bcrypt antes de serem armazenadas no banco de dados
+🧠 Quizzes
 
-👤 Usuários e Permissões
+    Quizzes interativos por comunidade
 
-Todo usuário é criado como user por padrão
+    Feedback visual de respostas corretas e incorretas
 
-O sistema já possui estrutura preparada para usuários administradores
+    Pontuação automática
 
-Permissões específicas para administrador podem ser adicionadas facilmente
+🏆 Ranking
 
-O controle de acesso é feito via payload do JWT
+    Ranking global de usuários
 
-📡 Endpoints Principais
-Usuários
+    Sistema de pontuação por desempenho
 
-POST /usuarios/cadastro – Cadastro de usuário
+🏗️ Arquitetura do Projeto
 
-POST /usuarios/login – Login
+    O projeto utiliza arquitetura monorepo, separando backend e frontend:
 
-GET /usuarios – Listar usuários (dashboard)
+    LevelUpEventos/
+    ├── api/        # Backend (Node.js + Express)
+    └── frontend/   # Frontend (HTML, CSS, JavaScript)
 
-GET /usuarios/ranking – Ranking global
+⚙️ Tecnologias Utilizadas
+    Backend (/api)
 
-DELETE /usuarios/deletar/:id – Deletar conta (somente o próprio usuário)
+    Node.js
 
-Comunidades
+    Express.js
 
-GET /comunidades – Listar comunidades
+    MongoDB
 
-POST /comunidades – Criar comunidade (autenticado)
+    Mongoose
 
-POST /comunidades/:id/entrar – Entrar na comunidade
+    JWT (JSON Web Token)
 
-POST /comunidades/:id/responder – Responder quiz
+    Bcrypt
 
-GET /comunidades/:id/ranking – Ranking da comunidade
+    CORS
 
-PUT /comunidades/:id/adicionar-perguntas – Adicionar quizzes
+    Frontend (/frontend)
 
-Eventos
+    HTML5
 
-POST /eventos/criar – Criar evento
+    CSS3 (Design System próprio)
 
-GET /eventos/todos – Listar eventos
+    JavaScript (Vanilla JS)
 
-DELETE /eventos/deletar/:id – Deletar evento (somente criador)
+    Fetch API
 
-🧪 Testes
+    LocalStorage
 
-Todas as rotas da API foram testadas utilizando o Thunder Client
+    UI inspirada em Netflix/Streaming
 
-Foram validados:
+🔐 Segurança
 
-Cadastro e login
+    Autenticação baseada em JWT
 
-Autenticação via token
+    Rotas protegidas por middleware
 
-Resposta de quizzes
-
-Atualização de pontuação
-
-Rankings
-
-Regras de acesso
-
-🌐 Banco de Dados
-
-Utiliza MongoDB Atlas
-
-Estrutura baseada em documentos
-
-Relacionamentos feitos via ObjectId
-
-Pontuação global e por comunidade armazenadas no usuário
-
-🖥️ Front-end
-
-O frontend ainda não foi desenvolvido
-
-A próxima etapa do projeto é criar uma interface simples apenas para demonstração
-
-Funcionalidades previstas:
-
-Cadastro e login
-
-Visualização de comunidades
-
-Resposta de quizzes
-
-Exibição de rankings
+    Criptografia de senhas com Bcrypt
 
 ▶️ Como Executar o Projeto
-Clonar o repositório
-git clone https://github.com/Joao-Roberto-Soares/LevelUpEventos.git
+    1️⃣ Clonar o repositório
+    git clone https://github.com/Joao-Roberto-Soares/LevelUpEventos.git
+    cd LevelUpEventos
 
-Instalar dependências
-npm install
+    2️⃣ Rodar o Backend
+    cd api
+    npm install
+    npm start
 
-Criar o arquivo .env
-PORT=3000
-MONGO_URI=SEU_MONGO_ATLAS_URI
-JWT_SECRET=SUA_CHAVE_SECRETA
 
-Iniciar o servidor
-npm start
+    Servidor rodando em:
 
-📌 Status do Projeto
+    http://localhost:3000
 
-🟢 Backend finalizado e funcional
+    3️⃣ Rodar o Frontend
 
-🟡 Frontend pendente (demonstração)
+    Abra o arquivo:
 
-🟡 Sistema de permissões admin preparado para expansão
+    frontend/login.html
+
+
+    ou utilize uma extensão como Live Server.
+
+🧪 Usuários e Testes
+
+    Você pode criar uma conta diretamente pela tela de cadastro.
+
+👨‍💻 Organização da Equipe (Projeto Acadêmico)
+
+    O desenvolvimento foi dividido em áreas:
+
+    Área	Responsável
+    Arquitetura do Sistema	João Roberto
+    Backend e API REST	João Roberto
+    Autenticação e Segurança	João Roberto
+    Frontend e UI/UX	João Roberto
+    Sistema de Comunidades	João Roberto
+    Sistema de Quiz	João Roberto
+    Ranking e Gamificação	João Roberto
+
+📈 Diferenciais do Projeto
+
+    Interface moderna e profissional
+
+    Arquitetura escalável
+
+    Gamificação integrada
+
+    Estrutura pronta para produção
+
+    Código organizado e documentado
+
+📌 Próximas Melhorias
+
+    Dashboard administrativo
+
+    Sistema de notificações
+
+    Gamificação avançada (níveis e conquistas)
+
+    Chat em tempo real nas comunidades
+
+    Deploy em nuvem (Render + Vercel)
 
 📄 Licença
 
-Este projeto foi desenvolvido para fins educacionais
+    Este projeto foi desenvolvido para fins educacionais.
+
+👤 Autor
+
+    João Roberto Soares
+        
+        github: Joao-Roberto-Soares
+        email: joaorobertovds@gmail.com
