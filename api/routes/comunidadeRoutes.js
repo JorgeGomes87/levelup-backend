@@ -87,7 +87,7 @@ router.get('/:id/ranking', async (req, res) => {
         };
       })
       .sort((a, b) => b.pontos - a.pontos)
-      .slice(0, 10); // TOP 10
+      .slice(0, 10);
 
     res.json(ranking);
   } catch (error) {
@@ -101,13 +101,14 @@ router.get('/:id/ranking', async (req, res) => {
 /* =====================================================
    4. QUIZ ALEATÓRIO DA COMUNIDADE
    GET /comunidades/:id/quiz
+   (RETORNA PERGUNTA + OPCOES + CORRETA)
 ===================================================== */
 router.get('/:id/quiz', async (req, res) => {
   const comunidadeId = req.params.id;
   if (!validarObjectId(comunidadeId, res)) return;
 
   try {
-    const resultado = await Comunidade.aggregate([
+    const quiz = await Comunidade.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(comunidadeId) } },
       { $unwind: "$quizzes" },
       { $sample: { size: 10 } },
@@ -115,12 +116,13 @@ router.get('/:id/quiz', async (req, res) => {
         $project: {
           _id: 0,
           pergunta: "$quizzes.pergunta",
-          alternativas: "$quizzes.alternativas"
+          opcoes: "$quizzes.opcoes",
+          correta: "$quizzes.correta"
         }
       }
     ]);
 
-    res.json(resultado);
+    res.json(quiz);
   } catch (error) {
     res.status(500).json({ erro: "Erro ao gerar quiz aleatório" });
   }
@@ -170,7 +172,6 @@ router.post('/:id/entrar', auth, async (req, res) => {
       return res.status(404).json({ erro: "Comunidade não encontrada" });
     }
 
-    // Evita duplicação de membros
     const jaMembro = comunidade.membros.some(
       id => id.toString() === usuarioId
     );
@@ -184,7 +185,6 @@ router.post('/:id/entrar', auth, async (req, res) => {
     comunidade.membros.push(usuarioId);
     await comunidade.save();
 
-    // Evita duplicar progresso
     const jaExisteProgresso = await User.findOne({
       _id: usuarioId,
       "progresso.comunidade": comunidadeId
@@ -288,6 +288,57 @@ router.put('/:id/adicionar-perguntas', auth, async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ erro: error.message });
+  }
+});
+
+/* =====================================================
+   9. FINALIZAR QUIZ E PONTUAR
+   POST /comunidades/:id/pontuar
+===================================================== */
+router.post('/:id/pontuar', auth, async (req, res) => {
+  const comunidadeId = req.params.id;
+  const usuarioId = req.usuarioId;
+  const { pontos } = req.body;
+
+  if (!validarObjectId(comunidadeId, res)) return;
+
+  if (typeof pontos !== "number" || pontos <= 0) {
+    return res.status(400).json({
+      erro: "Pontuação inválida"
+    });
+  }
+
+  try {
+    const usuario = await User.findOneAndUpdate(
+      {
+        _id: usuarioId,
+        "progresso.comunidade": comunidadeId
+      },
+      {
+        $inc: {
+          pontos: pontos,
+          "progresso.$.pontos": pontos
+        }
+      },
+      { new: true }
+    );
+
+    if (!usuario) {
+      return res.status(404).json({
+        erro: "Usuário não está vinculado a esta comunidade"
+      });
+    }
+
+    res.json({
+      mensagem: "🏆 Pontuação adicionada com sucesso!",
+      pontosGanhados: pontos
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      erro: "Erro ao pontuar",
+      detalhe: error.message
+    });
   }
 });
 
