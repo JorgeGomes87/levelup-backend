@@ -193,4 +193,19 @@
     João Roberto Soares
         
         github: Joao-Roberto-Soares
-        email: joaorobertovds@gmail.com
+
+        ## 👥 Equipe
+- **João Roberto Soares** - [GitHub](https://github.com/Joao-Roberto-Soares) (Líder)
+                             email: joaorobertovds@gmail.com
+- **Jorge Gomes**         - [GitHub](https://github.com/JorgeGomes87)
+                             email: baraoect@gmail.com
+- **Marcus Reimol**          - [GitHub](URL)
+                             email:
+- **Rodrigo Oliveira**      - [GitHub]
+                             email :
+**Andressa Fagunde**        - [GitHub]
+                             email :
+- **Millena**              -[GitHub]
+                             email :
+- **Rayner**               - [GitHub]
+                             email :  
